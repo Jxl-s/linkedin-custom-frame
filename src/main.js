@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import vertexShader from "./shaders/vertex.glsl";
+import fragmentShader from "./shaders/fragment.glsl";
 
 const canvas = document.querySelector("canvas.webgl");
 const scene = new THREE.Scene();
@@ -6,27 +8,10 @@ const scene = new THREE.Scene();
 const textureLoader = new THREE.TextureLoader();
 const alphaTexture = textureLoader.load("/textures/alpha.png");
 
-const vertexShader = `
-  varying vec2 vUv;
-  void main() {
-    vUv = uv;
-    gl_Position = vec4(position, 1.0);
-  }
-`;
-
-const fragmentShader = `
-  uniform sampler2D uAlphaTexture;
-  varying vec2 vUv;
-
-  void main() {
-    float alpha = texture2D(uAlphaTexture, vUv).r;
-    gl_FragColor = vec4(0.2, 0.2, 1.0, alpha);
-  }
-`;
-
 const material = new THREE.ShaderMaterial({
   uniforms: {
     uAlphaTexture: { value: alphaTexture },
+    uRingColor: { value: new THREE.Color(0xcc2222) },
   },
   vertexShader,
   fragmentShader,
