@@ -1,11 +1,12 @@
 # LinkedIn Custom Ring
 
- A high-accuracy custom LinkedIn-style ring for your profile pictures.
+Easily generate custom LinkedIn-style profile rings like `#OPENTOWORK`, `#HIRING`, or anything you want. Fully customizable with precise placement, colors, font, and size.
 
-## Demo
+Tries to mimick LinkedIn's rings as much as possible with same font and same gradient placement.
 
-The deployed website can be viewed here: https://linkedin-ring.jiaxuan.li
+## 🔗 Live Demo  
+Check it out here: [https://linkedin-ring.jiaxuan.li](https://linkedin-ring.jiaxuan.li)
 
-## Examples
+## 🖼️ Example Output  
 
-<img src="assets/example-1.png" width="300"/>
+<img src="assets/example-1.png" width="300" />
