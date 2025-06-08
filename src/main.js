@@ -1,30 +1,24 @@
 // Import libraries
-import * as THREE from "three";
 import GUI from "lil-gui";
-
-// Import shaders
-import vertexShader from "./shaders/vertex.glsl";
-import fragmentShader from "./shaders/fragment.glsl";
 import { injectFont } from "./util/font";
 
 const IMAGE_SIZE = 720;
 
-// Prepare the canvas and scene
+// Prepare the canvas
 const canvas = document.querySelector("canvas.webgl");
-const scene = new THREE.Scene();
-const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const ctx = canvas.getContext("2d");
 
-// Prepare the renderer
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-const render = () => renderer.render(scene, camera);
+canvas.width = IMAGE_SIZE;
+canvas.height = IMAGE_SIZE;
+canvas.style.width = `${IMAGE_SIZE}px`;
+canvas.style.height = `${IMAGE_SIZE}px`;
 
-renderer.setSize(IMAGE_SIZE, IMAGE_SIZE);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// Load textures
+const alphaImg = new Image();
+const backgroundImg = new Image();
 
-// Prepare the textures
-const textureLoader = new THREE.TextureLoader();
-const alphaTexture = textureLoader.load("/textures/alpha.png", render);
-alphaTexture.colorSpace = THREE.SRGBColorSpace;
+let backgroundLoaded = false;
+let alphaLoaded = false;
 
 // Prepare the SVG
 const svgItem = document.getElementById("svg-item");
@@ -49,19 +43,20 @@ const myData = {
 		// Transform the SVG into an image
 		const svgImg = new Image();
 		svgImg.onload = () => {
-			// Final render of the WebGL scene]
+			// Final render
 			render();
 
-			// Place the WebGL canvas and SVG image onto a final canvas
+			// Create final canvas with SVG overlay
 			const finalCanvas = document.createElement("canvas");
 			finalCanvas.width = IMAGE_SIZE;
 			finalCanvas.height = IMAGE_SIZE;
+			const finalCtx = finalCanvas.getContext("2d");
 
-			const ctx = finalCanvas.getContext("2d");
-			ctx.drawImage(canvas, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
-			ctx.drawImage(svgImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+			// Draw the main canvas and the SVG image
+			finalCtx.drawImage(canvas, 0, 0);
+			finalCtx.drawImage(svgImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
-			// Make a download link for the final image
+			// Download final image
 			const link = document.createElement("a");
 			link.download = "profile-picture.png";
 			link.href = finalCanvas.toDataURL("image/png");
@@ -74,12 +69,88 @@ const myData = {
 	},
 };
 
+// Render function
+const render = () => {
+	// Clear canvas
+	ctx.clearRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+	if (!alphaLoaded) return;
+
+	if (backgroundLoaded) {
+		// Draw background
+		ctx.drawImage(backgroundImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+
+		const imageData = ctx.getImageData(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+		const pixels = imageData.data;
+
+		// Create a temporary canvas to get alpha texture pixel data
+		const alphaCanvas = document.createElement("canvas");
+		alphaCanvas.width = IMAGE_SIZE;
+		alphaCanvas.height = IMAGE_SIZE;
+
+		const alphaCtx = alphaCanvas.getContext("2d");
+		alphaCtx.drawImage(alphaImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+
+		const alphaData = alphaCtx.getImageData(
+			0,
+			0,
+			IMAGE_SIZE,
+			IMAGE_SIZE,
+		).data;
+
+		// Get ring color
+		const ringColorHex = myData.ringColor.replace("#", "");
+		const ringR = parseInt(ringColorHex.substring(0, 2), 16);
+		const ringG = parseInt(ringColorHex.substring(2, 4), 16);
+		const ringB = parseInt(ringColorHex.substring(4, 6), 16);
+
+		// mix(background, ringColor, alpha)
+		for (let i = 0; i < pixels.length; i += 4) {
+			const alphaValue = alphaData[i] / 255;
+
+			// Current background color
+			const bgR = pixels[i];
+			const bgG = pixels[i + 1];
+			const bgB = pixels[i + 2];
+
+			pixels[i] = bgR * (1 - alphaValue) + ringR * alphaValue;
+			pixels[i + 1] = bgG * (1 - alphaValue) + ringG * alphaValue;
+			pixels[i + 2] = bgB * (1 - alphaValue) + ringB * alphaValue;
+		}
+
+		// Put the blended image data back
+		ctx.putImageData(imageData, 0, 0);
+	} else {
+		// Just show a color
+		ctx.fillStyle = "#000000";
+		ctx.fillRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+
+		const tempCanvas = document.createElement("canvas");
+		tempCanvas.width = IMAGE_SIZE;
+		tempCanvas.height = IMAGE_SIZE;
+
+		const tempCtx = tempCanvas.getContext("2d");
+		tempCtx.fillStyle = myData.ringColor;
+		tempCtx.fillRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+		tempCtx.globalCompositeOperation = "destination-in";
+		tempCtx.drawImage(alphaImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+
+		ctx.drawImage(tempCanvas, 0, 0);
+	}
+};
+
+// Load alpha texture
+alphaImg.onload = () => {
+	alphaLoaded = true;
+	render();
+};
+
+alphaImg.src = "/textures/alpha.png";
+
 // Debug GUI
 const gui = new GUI();
 gui.addColor(myData, "ringColor")
 	.name("Ring Color")
-	.onChange((color) => {
-		material.uniforms.uRingColor.value.set(color);
+	.onChange(() => {
 		render();
 	});
 
@@ -115,31 +186,6 @@ gui.add(myData, "fontRotation", -60, 60)
 
 gui.add(myData, "download").name("Download Picture");
 
-// Create the shadermaterial
-const material = new THREE.ShaderMaterial({
-	uniforms: {
-		uAlphaTexture: { value: alphaTexture },
-		uBackgroundTexture: { value: null },
-		uRingColor: { value: new THREE.Color(myData.ringColor) },
-	},
-	vertexShader,
-	fragmentShader,
-	transparent: true,
-});
-
-// Make the quad geometry
-const geometry = new THREE.BufferGeometry();
-const vertices = new Float32Array([-1, -1, 0, 1, -1, 0, -1, 1, 0, 1, 1, 0]);
-const uvs = new Float32Array([0, 0, 1, 0, 0, 1, 1, 1]);
-const indices = new Uint16Array([0, 1, 2, 2, 1, 3]);
-
-geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
-geometry.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
-geometry.setIndex(new THREE.BufferAttribute(indices, 1));
-
-const quad = new THREE.Mesh(geometry, material);
-scene.add(quad);
-
 // Handle background image
 document.getElementById("file-input").addEventListener("change", (event) => {
 	const file = event.target.files[0];
@@ -147,18 +193,11 @@ document.getElementById("file-input").addEventListener("change", (event) => {
 
 	const reader = new FileReader();
 	reader.onload = (e) => {
-		const img = new Image();
-		img.onload = () => {
-			// Update the background uniform
-			const texture = new THREE.Texture(img);
-			texture.colorSpace = THREE.SRGBColorSpace;
-			texture.needsUpdate = true;
-
-			material.uniforms.uBackgroundTexture.value = texture;
+		backgroundImg.onload = () => {
+			backgroundLoaded = true;
 			render();
 		};
-
-		img.src = e.target.result;
+		backgroundImg.src = e.target.result;
 	};
 
 	reader.readAsDataURL(file);
