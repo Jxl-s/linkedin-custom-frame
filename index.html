@@ -1,77 +1,78 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Carlito:wght@700&display=swap"
-      rel="stylesheet"
-    />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <input type="file" id="file-input" accept="image/*" />
-    <div style="position: relative">
-      <canvas
-        class="webgl"
-        style="position: absolute; top: 0; left: 0"
-      ></canvas>
-      <svg
-        width="720"
-        height="720"
-        viewBox="0 0 720 720"
-        xmlns="http://www.w3.org/2000/svg"
-        style="position: absolute; top: 0; left: 0"
-        id="svg-item"
-      >
-        <!--<circle-->
-        <!--  cx="360"-->
-        <!--  cy="360"-->
-        <!--  r="360"-->
-        <!--  stroke="black"-->
-        <!--  stroke-width="2"-->
-        <!--  fill="none"-->
-        <!--/>-->
-        <!--<circle-->
-        <!--  cx="360"-->
-        <!--  cy="360"-->
-        <!--  r="300"-->
-        <!--  stroke="black"-->
-        <!--  stroke-width="2"-->
-        <!--  fill="none"-->
-        <!--/>-->
-        <defs>
-          <path
-            id="curve"
-            d="
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Carlito:wght@700&display=swap"
+			rel="stylesheet"
+		/>
+		<title>Vite App</title>
+	</head>
+	<body>
+		<input type="file" id="file-input" accept="image/*" />
+		<div style="position: relative">
+			<canvas
+				class="webgl"
+				style="position: absolute; top: 0; left: 0"
+			></canvas>
+			<svg
+				width="720"
+				height="720"
+				viewBox="0 0 720 720"
+				xmlns="http://www.w3.org/2000/svg"
+				style="position: absolute; top: 0; left: 0"
+				id="svg-item"
+			>
+				<!--<circle-->
+				<!--  cx="360"-->
+				<!--  cy="360"-->
+				<!--  r="360"-->
+				<!--  stroke="black"-->
+				<!--  stroke-width="2"-->
+				<!--  fill="none"-->
+				<!--/>-->
+				<!--<circle-->
+				<!--  cx="360"-->
+				<!--  cy="360"-->
+				<!--  r="300"-->
+				<!--  stroke="black"-->
+				<!--  stroke-width="2"-->
+				<!--  fill="none"-->
+				<!--/>-->
+				<defs>
+					<path
+						id="curve"
+						d="
     M 360,360
     m -300,0
     a 300,300 0 1,0 600,0
     a 300,300 0 1,0 -600,0"
-          />
-        </defs>
-        <text
-          font-family="Carlito, Helvetica, Arial, sans-serif"
-          font-size="76"
-          font-weight="700"
-          letter-spacing="10"
-          fill="white"
-          dominant-baseline="middle"
-          id="svg-text-item"
-          dy="5"
-        >
-          <textPath
-            href="#curve"
-            startOffset="0%"
-            text-anchor="start"
-            id="svg-text-path"
-          >
-            #OPENTOWORK
-          </textPath>
-        </text>
-      </svg>
-    </div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+					/>
+				</defs>
+				<text
+					font-family="Carlito, Helvetica, Arial, sans-serif"
+					font-size="76"
+					font-weight="700"
+					letter-spacing="10"
+					fill="white"
+					dominant-baseline="middle"
+					id="svg-text-item"
+					dy="5"
+					transform="rotate(0 360 360)"
+				>
+					<textPath
+						href="#curve"
+						text-anchor="start"
+						id="svg-text-path"
+						startOffset="0%"
+					>
+						#OPENTOWORK
+					</textPath>
+				</text>
+			</svg>
+		</div>
+		<script type="module" src="/src/main.js"></script>
+	</body>
 </html>
