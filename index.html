@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Carlito:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <canvas class="webgl" style="position: absolute; top: 0; left: 0"></canvas>
+    <svg
+      width="720"
+      height="720"
+      viewBox="0 0 720 720"
+      xmlns="http://www.w3.org/2000/svg"
+      style="position: absolute; top: 0; left: 0"
+      id="svg-item"
+    >
+      <circle
+        cx="360"
+        cy="360"
+        r="325"
+        stroke="black"
+        stroke-width="2"
+        fill="none"
+      />
+      <defs>
+        <path
+          id="curve"
+          d="
+        M 360,360
+        m -325,0
+        a 325,325 0 1,0 650,0
+        a 325,325 0 1,0 -650,0"
+        />
+      </defs>
+      <text
+        font-size="76"
+        font-weight="700"
+        font-family="Carlito, Helvetica, Arial, sans-serif"
+        letter-spacing="10"
+        fill="white"
+      >
+        <textPath
+          href="#curve"
+          startOffset="0%"
+          text-anchor="start"
+          id="svg-text-item"
+        >
+          #OPENTOWORK
+        </textPath>
+      </text>
+    </svg>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
