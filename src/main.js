@@ -19,7 +19,7 @@ const fragmentShader = `
   varying vec2 vUv;
 
   void main() {
-    float alpha = texture2D(uAlphaTexture, vUv).a;
+    float alpha = texture2D(uAlphaTexture, vUv).r;
     gl_FragColor = vec4(0.2, 0.2, 1.0, alpha);
   }
 `;
