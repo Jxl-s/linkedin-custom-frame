@@ -11,59 +11,66 @@
     <title>Vite App</title>
   </head>
   <body>
-    <canvas class="webgl" style="position: absolute; top: 0; left: 0"></canvas>
-    <svg
-      width="720"
-      height="720"
-      viewBox="0 0 720 720"
-      xmlns="http://www.w3.org/2000/svg"
-      style="position: absolute; top: 0; left: 0"
-      id="svg-item"
-    >
-      <circle
-        cx="360"
-        cy="360"
-        r="360"
-        stroke="black"
-        stroke-width="2"
-        fill="none"
-      />
-      <circle
-        cx="360"
-        cy="360"
-        r="242"
-        stroke="black"
-        stroke-width="2"
-        fill="none"
-      />
-      <defs>
-        <path
-          id="curve"
-          d="
+    <input type="file" id="file-input" accept="image/*" />
+    <div style="position: relative">
+      <canvas
+        class="webgl"
+        style="position: absolute; top: 0; left: 0"
+      ></canvas>
+      <svg
+        width="720"
+        height="720"
+        viewBox="0 0 720 720"
+        xmlns="http://www.w3.org/2000/svg"
+        style="position: absolute; top: 0; left: 0"
+        id="svg-item"
+      >
+        <!--<circle-->
+        <!--  cx="360"-->
+        <!--  cy="360"-->
+        <!--  r="360"-->
+        <!--  stroke="black"-->
+        <!--  stroke-width="2"-->
+        <!--  fill="none"-->
+        <!--/>-->
+        <!--<circle-->
+        <!--  cx="360"-->
+        <!--  cy="360"-->
+        <!--  r="242"-->
+        <!--  stroke="black"-->
+        <!--  stroke-width="2"-->
+        <!--  fill="none"-->
+        <!--/>-->
+        <defs>
+          <path
+            id="curve"
+            d="
     M 360,360
     m -301,0
     a 301,301 0 1,0 602,0
     a 301,301 0 1,0 -602,0"
-        />
-      </defs>
-      <text
-        font-size="76"
-        font-weight="700"
-        font-family="Carlito, Helvetica, Arial, sans-serif"
-        letter-spacing="10"
-        fill="white"
-        dominant-baseline="middle"
-      >
-        <textPath
-          href="#curve"
-          startOffset="0%"
-          text-anchor="start"
+          />
+        </defs>
+        <text
+          font-family="Carlito, Helvetica, Arial, sans-serif"
+          font-size="76"
+          font-weight="700"
+          letter-spacing="10"
+          fill="white"
+          dominant-baseline="middle"
           id="svg-text-item"
         >
-          #OPENTOWORK
-        </textPath>
-      </text>
-    </svg>
+          <textPath
+            href="#curve"
+            startOffset="0%"
+            text-anchor="start"
+            id="svg-text-path"
+          >
+            #OPENTOWORK
+          </textPath>
+        </text>
+      </svg>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
