@@ -10,4 +10,6 @@ void main() {
 
     color = mix(color, uRingColor, alpha);
     gl_FragColor = vec4(color, 1.0);
+
+    #include <colorspace_fragment>
 }

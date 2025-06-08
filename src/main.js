@@ -24,6 +24,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // Prepare the textures
 const textureLoader = new THREE.TextureLoader();
 const alphaTexture = textureLoader.load("/textures/alpha.png", render);
+alphaTexture.colorSpace = THREE.SRGBColorSpace;
 
 // Prepare the SVG
 const svgItem = document.getElementById("svg-item");
@@ -34,7 +35,7 @@ svgItem.setAttribute("height", IMAGE_SIZE);
 
 // Debug attributes
 const myData = {
-	ringColor: "#cc2222",
+	ringColor: "#457032",
 	textContent: "#OPENTOWORK",
 	fontSize: 56,
 	fontSpacing: 10,
@@ -150,6 +151,7 @@ document.getElementById("file-input").addEventListener("change", (event) => {
 		img.onload = () => {
 			// Update the background uniform
 			const texture = new THREE.Texture(img);
+			texture.colorSpace = THREE.SRGBColorSpace;
 			texture.needsUpdate = true;
 
 			material.uniforms.uBackgroundTexture.value = texture;
