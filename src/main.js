@@ -1,6 +1,5 @@
 // Import libraries
 import GUI from "lil-gui";
-import { injectFont } from "./util/font";
 
 const IMAGE_SIZE = 720;
 
@@ -22,8 +21,6 @@ let alphaLoaded = false;
 
 // Prepare the SVG
 const svgItem = document.getElementById("svg-item");
-injectFont(svgItem);
-
 svgItem.setAttribute("width", IMAGE_SIZE);
 svgItem.setAttribute("height", IMAGE_SIZE);
 
@@ -34,6 +31,7 @@ const myData = {
 	fontSize: 56,
 	fontSpacing: 10,
 	fontRotation: 0,
+	fontOffset: 5,
 	download: () => {
 		// Prepare the SVG text
 		const svgString = new XMLSerializer().serializeToString(svgItem);
@@ -182,6 +180,13 @@ gui.add(myData, "fontRotation", -60, 60)
 	.step(1)
 	.onChange((offset) => {
 		svgTextItem.setAttribute("transform", `rotate(${offset} 360 360)`);
+	});
+
+gui.add(myData, "fontOffset", -50, 50)
+	.name("Font Offset")
+	.step(1)
+	.onChange((offset) => {
+		svgTextItem.setAttribute("dy", offset);
 	});
 
 gui.add(myData, "download").name("Download Picture");
