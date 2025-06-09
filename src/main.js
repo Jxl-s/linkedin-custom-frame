@@ -28,6 +28,7 @@ svgItem.setAttribute("height", IMAGE_SIZE);
 const myData = {
 	ringColor: "#457032",
 	textContent: "#OPENTOWORK",
+	textUppercase: true,
 	fontSize: 56,
 	fontSpacing: 10,
 	fontRotation: 0,
@@ -161,6 +162,16 @@ gui.add(myData, "textContent")
 	.name("Text")
 	.onChange((text) => {
 		svgTextPath.textContent = text;
+	});
+
+gui.add(myData, "textUppercase")
+	.name("Force Uppercase")
+	.onChange((value) => {
+		if (value) {
+			svgTextItem.style.setProperty("text-transform", "uppercase");
+		} else {
+			svgTextItem.style.setProperty("text-transform", "");
+		}
 	});
 
 gui.add(myData, "fontSize", 10, 100)
