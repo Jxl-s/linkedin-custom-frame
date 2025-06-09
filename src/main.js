@@ -104,6 +104,7 @@ const render = () => {
 		// mix(background, ringColor, alpha)
 		for (let i = 0; i < pixels.length; i += 4) {
 			const alphaValue = alphaData[i] / 255;
+			const originalAlpha = pixels[i + 3];
 
 			// Current background color
 			const bgR = pixels[i];
@@ -113,6 +114,7 @@ const render = () => {
 			pixels[i] = bgR * (1 - alphaValue) + ringR * alphaValue;
 			pixels[i + 1] = bgG * (1 - alphaValue) + ringG * alphaValue;
 			pixels[i + 2] = bgB * (1 - alphaValue) + ringB * alphaValue;
+			pixels[i + 3] = Math.max(originalAlpha, alphaValue * 255);
 		}
 
 		// Put the blended image data back
