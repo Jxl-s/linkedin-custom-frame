@@ -70,73 +70,50 @@ const myData = {
 
 // Render function
 const render = () => {
-	// Clear canvas
+	// Clear canvas to transparent
 	ctx.clearRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
 	if (!alphaLoaded) return;
 
-	if (backgroundLoaded) {
-		// Draw background
-		ctx.drawImage(backgroundImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+	// Draw background
+	ctx.drawImage(backgroundImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
-		const imageData = ctx.getImageData(0, 0, IMAGE_SIZE, IMAGE_SIZE);
-		const pixels = imageData.data;
+	const imageData = ctx.getImageData(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+	const pixels = imageData.data;
 
-		// Create a temporary canvas to get alpha texture pixel data
-		const alphaCanvas = document.createElement("canvas");
-		alphaCanvas.width = IMAGE_SIZE;
-		alphaCanvas.height = IMAGE_SIZE;
+	// Create a temporary canvas to get alpha texture pixel data
+	const alphaCanvas = document.createElement("canvas");
+	alphaCanvas.width = IMAGE_SIZE;
+	alphaCanvas.height = IMAGE_SIZE;
 
-		const alphaCtx = alphaCanvas.getContext("2d");
-		alphaCtx.drawImage(alphaImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
+	const alphaCtx = alphaCanvas.getContext("2d");
+	alphaCtx.drawImage(alphaImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
 
-		const alphaData = alphaCtx.getImageData(
-			0,
-			0,
-			IMAGE_SIZE,
-			IMAGE_SIZE,
-		).data;
+	const alphaData = alphaCtx.getImageData(0, 0, IMAGE_SIZE, IMAGE_SIZE).data;
 
-		// Get ring color
-		const ringColorHex = myData.ringColor.replace("#", "");
-		const ringR = parseInt(ringColorHex.substring(0, 2), 16);
-		const ringG = parseInt(ringColorHex.substring(2, 4), 16);
-		const ringB = parseInt(ringColorHex.substring(4, 6), 16);
+	// Get ring color
+	const ringColorHex = myData.ringColor.replace("#", "");
+	const ringR = parseInt(ringColorHex.substring(0, 2), 16);
+	const ringG = parseInt(ringColorHex.substring(2, 4), 16);
+	const ringB = parseInt(ringColorHex.substring(4, 6), 16);
 
-		// mix(background, ringColor, alpha)
-		for (let i = 0; i < pixels.length; i += 4) {
-			const alphaValue = alphaData[i] / 255;
-			const originalAlpha = pixels[i + 3];
+	// mix(background, ringColor, alpha)
+	for (let i = 0; i < pixels.length; i += 4) {
+		const alphaValue = alphaData[i] / 255;
+		const originalAlpha = pixels[i + 3];
 
-			// Current background color
-			const bgR = pixels[i];
-			const bgG = pixels[i + 1];
-			const bgB = pixels[i + 2];
+		// Current background color
+		const bgR = pixels[i];
+		const bgG = pixels[i + 1];
+		const bgB = pixels[i + 2];
 
-			pixels[i] = bgR * (1 - alphaValue) + ringR * alphaValue;
-			pixels[i + 1] = bgG * (1 - alphaValue) + ringG * alphaValue;
-			pixels[i + 2] = bgB * (1 - alphaValue) + ringB * alphaValue;
-			pixels[i + 3] = Math.max(originalAlpha, alphaValue * 255);
-		}
-
-		// Put the blended image data back
-		ctx.putImageData(imageData, 0, 0);
-	} else {
-		// Just show a color
-		ctx.fillStyle = "#000000";
-		ctx.fillRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
-
-		const tempCanvas = document.createElement("canvas");
-		tempCanvas.width = IMAGE_SIZE;
-		tempCanvas.height = IMAGE_SIZE;
-
-		const tempCtx = tempCanvas.getContext("2d");
-		tempCtx.fillStyle = myData.ringColor;
-		tempCtx.fillRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
-		tempCtx.globalCompositeOperation = "destination-in";
-		tempCtx.drawImage(alphaImg, 0, 0, IMAGE_SIZE, IMAGE_SIZE);
-
-		ctx.drawImage(tempCanvas, 0, 0);
+		pixels[i] = bgR * (1 - alphaValue) + ringR * alphaValue;
+		pixels[i + 1] = bgG * (1 - alphaValue) + ringG * alphaValue;
+		pixels[i + 2] = bgB * (1 - alphaValue) + ringB * alphaValue;
+		pixels[i + 3] = Math.max(originalAlpha, alphaValue * 255);
 	}
+
+	// Put the blended image data back
+	ctx.putImageData(imageData, 0, 0);
 };
 
 // Load alpha texture
