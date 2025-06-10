@@ -132,8 +132,8 @@ gui.addColor(myData, "ringColor")
 		render();
 	});
 
-const svgTextPath = document.getElementById("svg-text-path");
-const svgTextItem = document.getElementById("svg-text-item");
+const svgTextPath = svgItem.querySelector("textPath");
+const svgTextItem = svgItem.querySelector("text");
 
 gui.add(myData, "textContent")
 	.name("Text")
