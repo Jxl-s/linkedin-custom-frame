@@ -9,5 +9,4 @@ Check it out here: [https://linkedin-frame.jiaxuan.li](https://linkedin-frame.ji
 
 ## 🖼️ Example Output  
 
-<img src="assets/example-1.png" width="300" style="display:inline-block" />
-<img src="assets/example-2.png" width="300" style="display:inline-block" />
+<img src="assets/example-1.png" width="300" style="display:inline-block" /><img src="assets/example-2.png" width="300" style="display:inline-block" />
