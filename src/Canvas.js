@@ -1,4 +1,4 @@
-import { IMAGE_SIZE } from "./constants";
+import { IMAGE_SIZE } from "./Constants";
 
 export class Canvas {
 	constructor(canvas, ringColor) {

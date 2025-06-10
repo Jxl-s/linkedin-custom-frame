@@ -1,5 +1,5 @@
 // Import libraries
-import { DEFAULT_OPTIONS, IMAGE_SIZE } from "./constants";
+import { DEFAULT_OPTIONS, IMAGE_SIZE } from "./Constants";
 import { Canvas } from "./Canvas";
 import { Debug } from "./Debug";
 
