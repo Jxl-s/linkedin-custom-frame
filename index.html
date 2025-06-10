@@ -9,20 +9,33 @@
 			name="description"
 			content="A high-accuracy custom LinkedIn-style frame generator for your profile pictures"
 		/>
+		<style>
+			body {
+				font-family: "Carlito";
+			}
+		</style>
 	</head>
+
 	<body>
+		<h1>LinkedIn Custom Frame</h1>
+		<p>
+			A high-accuracy custom LinkedIn-style frame generator for your
+			profile pictures.
+		</p>
+		<p>
+			Source Code:
+			<a href="https://github.com/Jxl-s/linkedin-custom-frame"
+				>https://github.com/Jxl-s/linkedin-custom-frame</a
+			>
+		</p>
 		<input
 			type="file"
 			id="file-input"
 			accept="image/*"
 			style="display: block"
 		/>
-		<a href="https://github.com/Jxl-s/linkedin-custom-frame">Source Code</a>
 		<div style="position: relative">
-			<canvas
-				class="webgl"
-				style="position: absolute; top: 0; left: 0"
-			></canvas>
+			<canvas style="position: absolute; top: 0; left: 0"></canvas>
 			<svg
 				width="720"
 				height="720"
@@ -74,3 +87,4 @@
 		<script type="module" src="/src/main.js"></script>
 	</body>
 </html>
+
